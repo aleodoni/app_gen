@@ -1,0 +1,26 @@
+language: python
+
+python:
+  - "3.6"
+
+before_install:
+  - export DJANGO_SETTINGS_MODULE=config.settings.test
+  - export DATABASE_URL=sqlite:///ramais.db
+
+# comando para instalar dependencias
+install: 
+  - pip install -r requirements.txt
+  - pip install codecov
+
+before_script:
+  - cd backend/ramais
+#  - psql -c 'create database mscmctest;' -U postgres
+#  - python manage.py makemigrations api
+#  - python manage.py migrate api
+
+# comando para rodas os testes
+script: 
+  - coverage run manage.py test
+
+after_success:
+  codecov
