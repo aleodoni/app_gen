@@ -4,7 +4,7 @@ from django.apps import AppConfig
 
 
 class ApiConfig(AppConfig):
-    name = 'ramais.api'
+    name = 'core.api'
     verbose_name = "API"
 
     def ready(self):

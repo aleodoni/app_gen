@@ -1,11 +1,11 @@
-upstream ramais_server {
-    server unix:/usr/share/webapps/ramais/backend/ramais/var/run/gunicorn.sock fail_timeout=0;
+upstream <%= projectName %>_server {
+    server unix:/usr/share/webapps/<%= projectName %>/backend/<%= projectName %>/var/run/gunicorn.sock fail_timeout=0;
 }
 
 server {
     listen 80;
 
-    server_name ramais.cmc.pr.gov.br;
+    server_name <%= projectName %>.cmc.pr.gov.br;
 
     rewrite ^ https://$http_host$request_uri? permanent;
 
@@ -19,22 +19,22 @@ server {
 
     ssl on;
 
-    server_name ramais.cmc.pr.gov.br;
+    server_name <%= projectName %>.cmc.pr.gov.br;
 
     ssl_certificate     /etc/ssl/certs/cmc/201603-201903/cmc.pr.gov.br.crt;
     ssl_certificate_key /etc/ssl/private/cmc/201603-201903/cmc.pr.gov.br.key;
 
     server_tokens off;
 
-    access_log /var/www/html/ramais/logs/nginx-access.log;
-    error_log /var/www/html/ramais/logs/nginx-error.log;
+    access_log /var/www/html/<%= projectName %>/logs/nginx-access.log;
+    error_log /var/www/html/<%= projectName %>/logs/nginx-error.log;
 
     location /static/ {
-        alias   /var/www/html/ramais/static/;
+        alias   /var/www/html/<%= projectName %>/static/;
     }
 
     location /media/ {
-        alias   /var/www/html/ramais/media/;
+        alias   /var/www/html/<%= projectName %>/media/;
     }
 
     location / {
@@ -49,7 +49,7 @@ server {
         proxy_redirect off;
 
         if (!-f $request_filename) {
-            proxy_pass http://ramais_server;
+            proxy_pass http://<%= projectName %>_server;
             break;
         }
     }

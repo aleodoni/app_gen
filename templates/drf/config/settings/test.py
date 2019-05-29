@@ -65,6 +65,6 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres:///ramais-test'),
+    'default': env.db('DATABASE_URL', default='postgres:///db-test'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True

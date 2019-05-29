@@ -12,6 +12,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
-    re_path(r'^api/', include('ramais.api.urls')),
+    re_path(r'^api/', include('core.api.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

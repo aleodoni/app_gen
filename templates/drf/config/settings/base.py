@@ -8,7 +8,7 @@ def gettext_noop(s):
     return s
 
 ROOT_DIR = environ.Path(__file__) - 3
-APPS_DIR = ROOT_DIR.path('ramais')
+APPS_DIR = ROOT_DIR.path('core')
 
 ALLOWED_HOSTS=['*']
 
@@ -58,7 +58,7 @@ THIRD_PARTY_APPS = [
 
 # Apps specific for this project go here.
 LOCAL_APPS = [
-    'ramais.api.apps.ApiConfig',
+    'core.api.apps.ApiConfig',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -292,116 +292,6 @@ LOGGING = {
     },
 }
 
-# PIPELINE
-# ------------------------------------------------------------------------------
-
-'''
-PIPELINE = {
-    'PIPELINE_ENABLED': False,
-    'JS_COMPRESSOR': False,
-    'CSS_COMPRESSOR': False,
-    'STYLESHEETS': {
-        'master': {
-            'source_filenames': (
-              'bootstrap/dist/css/bootstrap.min.css',
-              #'bootstrap-calendar/css/calendar.min.css',
-              'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css',
-              'datatables/media/css/jquery.dataTables.css',
-              'datatables/media/css/dataTables.bootstrap.css',
-              'datatables.net-responsive-bs/css/responsive.bootstrap.min.css',
-              'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-              'fullcalendar/dist/fullcalendar.min.css',
-              'callout.css',
-              'event.css',
-            ),
-            'output_filename': 'css/master.css',
-        },
-    },
-    'JAVASCRIPT': {
-        'master': {
-            'source_filenames': (
-              'jquery/jquery.js',
-              'moment/min/moment.min.js',
-              'moment/locale/pt-br.js',
-              'bootstrap/dist/js/bootstrap.min.js',
-              'underscore/underscore-min.js',
-              #'bootstrap-calendar/js/language/pt-BR.js',
-              #'bootstrap-calendar/js/calendar.min.js',
-              'bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
-              'bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js',
-              'fontawesome/svg-with-js/js/fontawesome-all.min.js',
-              'datatables/media/js/jquery.dataTables.js',
-              'datatables/media/js/dataTables.bootstrap.js',
-              'datatables.net-responsive/js/dataTables.responsive.min.js',
-              'datatables.net-responsive-bs/js/responsive.bootstrap.min.js',
-              'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-              'fullcalendar/dist/fullcalendar.min.js',
-              'fullcalendar/dist/gcal.min.js',
-              'fullcalendar/dist/locale-all.min.js',
-            ),
-            'output_filename': 'js/master.js',
-        }
-    }
-}
-
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-#STATICFILES_STORAGE = 'django_pipeline_forgiving.storages.PipelineForgivingStorage'
-'''
-
-# BOWER
-# ------------------------------------------------------------------------------
-
-'''
-BOWER_COMPONENTS_ROOT = str(ROOT_DIR.path('components'))
-BOWER_INSTALLED_APPS = (
-    'jquery#1.9.1',
-    #'jquery#3.3.1',
-    'underscore',
-    'bootstrap#3',
-    #'bootstrap-calendar',
-    #'jasny-bootstrap',
-    'datatables',
-    'datatables-bootstrap3',
-    'bootstrap-3-datepicker',
-    'bootstrap-datepicker',
-    'eonasdan-bootstrap-datetimepicker#latest',
-    'bootstrap3-datetimepicker',
-    #'vue',
-    #'vue-strap',
-    'fontawesome',
-    'moment',
-    'fullcalendar',
-    #'bootstrap-select'
-)
-'''
-# LDAP
-# ------------------------------------------------------------------------------
-#LDAP_AUTH_URL = "ldap://ldap"
-'''
-LDAP_AUTH_URL = env('LDAP_AUTH_URL', default='')
-LDAP_AUTH_USE_TLS = env('LDAP_AUTH_USE_TLS', default=False, cast=bool)
-LDAP_AUTH_SEARCH_BASE = env('LDAP_AUTH_SEARCH_BASE', default='')
-LDAP_AUTH_OBJECT_CLASS = env('LDAP_AUTH_OBJECT_CLASS', default='')
-LDAP_AUTH_USER_FIELDS = {
-    "username": env('LDAP_AUTH_USER_FIELDS_USERNAME', default=''),
-    "first_name": env('LDAP_AUTH_USER_FIELDS_FIRST_NAME', default=''),
-    "last_name": env('LDAP_AUTH_USER_FIELDS_LAST_NAME', default=''),
-    "email": env('LDAP_AUTH_USER_FIELDS_EMAIL', default=''),
-    #"matricula": env('LDAP_AUTH_USER_FIELDS_MATRICULA', default=''),
-    "pessoa": env('LDAP_AUTH_USER_FIELDS_PESSOA', default=''),
-    "lotado": env('LDAP_AUTH_USER_FIELDS_LOTADO', default=''),
-    "chefia": env('LDAP_AUTH_USER_FIELDS_CHEFIA', default=''),
-}
-LDAP_AUTH_USER_LOOKUP_FIELDS = ("username",)
-LDAP_AUTH_CLEAN_USER_DATA = "django_python3_ldap.utils.clean_user_data"
-LDAP_AUTH_SYNC_USER_RELATIONS = "django_python3_ldap.utils.sync_user_relations"
-LDAP_AUTH_FORMAT_SEARCH_FILTERS = "django_python3_ldap.utils.format_search_filters"
-LDAP_AUTH_FORMAT_USERNAME = "django_python3_ldap.utils.format_username_openldap"
-LDAP_AUTH_ACTIVE_DIRECTORY_DOMAIN = None
-LDAP_AUTH_CONNECTION_USERNAME = None
-LDAP_AUTH_CONNECTION_PASSWORD = None
-'''
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -409,18 +299,6 @@ REST_FRAMEWORK = {
          'rest_framework.authentication.TokenAuthentication',
     ],
 }
-
-
-'''
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
-    'ALGORITHM': 'HS256',
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_ALLOW_REFRESH': False,
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
-}
-'''
 
 CORS_ORIGIN_ALLOW_ALL = True
 
