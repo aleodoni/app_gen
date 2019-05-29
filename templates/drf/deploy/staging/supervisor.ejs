@@ -1,0 +1,8 @@
+[program:<%= projectName %>]
+command=/usr/share/webapps/<%= projectName %>/backend/<%= projectName %>/deploy/staging/run.sh
+directory=/usr/share/webapps/<%= projectName %>/backend/<%= projectName %>
+user=www-data  
+stopsignal=KILL  
+redirect_stderr=True  
+stdout_logfile=/var/log/supervisor/<%= projectName %>.stdout.log  
+stderr_logfile=/var/log/supervisor/<%= projectName %>.stderr.log  

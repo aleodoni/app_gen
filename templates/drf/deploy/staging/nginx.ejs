@@ -1,0 +1,47 @@
+upstream <%= projectName %>_django {
+    server unix:/usr/share/webapps/<%= projectName %>/backend/<%= projectName %>/var/run/gunicorn.sock fail_timeout=0;
+}
+
+upstream <%= projectName %>_nuxt {
+    server 10.0.0.61:3001;
+}
+
+server {
+    listen 80;
+
+    server_name <%= projectName %>-staging.cmc.pr.gov.br;
+
+    rewrite ^ https://$http_host$request_uri? permanent;
+
+    server_tokens off;
+
+    add_header 'Access-Control-Allow-Origin' '*';
+}
+
+server {
+    listen 443;
+
+    ssl on;
+
+    server_name <%= projectName %>-staging.cmc.pr.gov.br;
+
+    ssl_certificate     /etc/ssl/certs/cmc.pr.gov.br.crt;
+    ssl_certificate_key /etc/ssl/private/cmc.pr.gov.br.key;
+
+    server_tokens off;
+
+    access_log /var/www/html/<%= projectName %>/logs/nginx-access.log;
+    error_log /var/www/html/<%= projectName %>/logs/nginx-error.log;
+
+    location ~ /(api|static)/ {
+        proxy_pass http://<%= projectName %>_django;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Host $host;
+    }
+
+    location / {
+        proxy_pass http://<%= projectName %>_nuxt;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Host $host;
+    }
+}

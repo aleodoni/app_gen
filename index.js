@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-
+import { fileTypes as fileTypeDfr } from './filetypes/drf'
 const inquirer = require("inquirer");
 const fs = require("fs");
+const ejs = require("ejs");
 const CURR_DIR = process.cwd();
 
 const CHOICES = fs.readdirSync(`${__dirname}/templates`);
@@ -31,10 +32,10 @@ inquirer.prompt(QUESTIONS).then(answers => {
   const templatePath = `${__dirname}/templates/${projectChoice}`;
 
   fs.mkdirSync(`${CURR_DIR}/${projectName}`);
-  createDirectoryContents(templatePath, projectName);
+  createDirectoryContents(templatePath, projectName, projectChoice);
 });
 
-function createDirectoryContents(templatePath, newProjectPath) {
+function createDirectoryContents(templatePath, projectName, projectChoice) {
   const filesToCreate = fs.readdirSync(templatePath);
 
   filesToCreate.forEach(file => {
@@ -46,16 +47,43 @@ function createDirectoryContents(templatePath, newProjectPath) {
 
       if (file === ".npmignore") file = ".gitignore";
 
-      const writePath = `${CURR_DIR}/${newProjectPath}/${file}`;
+      const writePath = `${CURR_DIR}/${projectName}/${file}`;
 
-      fs.writeFileSync(writePath, contents, "utf8");
+      const [fileName, fileExtension] = file.split('.')
+      if (fileExtension === 'ejs') {
+        generateFileByTemplate(projectName, `${CURR_DIR}/${projectName}/`,fileName, contents, projectChoice)
+      }
+      else {
+        fs.writeFileSync(writePath, contents, "utf8");
+      }
     } else if (stats.isDirectory) {
-      fs.mkdirSync(`${CURR_DIR}/${newProjectPath}/${file}`);
+      fs.mkdirSync(`${CURR_DIR}/${projectName}/${file}`);
 
       createDirectoryContents(
         `${templatePath}/${file}`,
-        `${newProjectPath}/${file}`
+        `${projectName}/${file}`,
+        projectChoice
       );
     }
   });
+}
+
+function generateFileByTemplate(projectName, path, file, contents, projectChoice) {
+  let fileType
+  let fileName
+  const dataForTemplate = {
+    'projectName': projectName
+  }
+
+  if (projectChoice === 'drf') fileType = fileTypeDfr
+  const newContent = ejs.render(contents, dataForTemplate)
+
+  Object.keys(fileType).forEach(key => {
+    if (key == file) {
+      fileName = `${key}.${fileType[key]}`
+    }
+  })
+
+  fs.writeFileSync(`${path}${fileName}`, newContent, "utf8")
+  
 }
