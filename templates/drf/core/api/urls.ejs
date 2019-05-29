@@ -14,7 +14,7 @@ from rest_framework import routers
 from . import views
 
 router =  routers.DefaultRouter()
-router.register('ramais', views.RamalViewSet)
+router.register('<%= projectName %>', views.RamalViewSet)
 
 urlpatterns = [
     #path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),

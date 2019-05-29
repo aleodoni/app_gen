@@ -35,7 +35,7 @@ inquirer.prompt(QUESTIONS).then(answers => {
   createDirectoryContents(templatePath, projectName, projectChoice);
 });
 
-function createDirectoryContents(templatePath, newProjectPath, projectChoice) {
+function createDirectoryContents(templatePath, projectName, projectChoice) {
   const filesToCreate = fs.readdirSync(templatePath);
 
   filesToCreate.forEach(file => {
@@ -47,42 +47,43 @@ function createDirectoryContents(templatePath, newProjectPath, projectChoice) {
 
       if (file === ".npmignore") file = ".gitignore";
 
-      const writePath = `${CURR_DIR}/${newProjectPath}/${file}`;
+      const writePath = `${CURR_DIR}/${projectName}/${file}`;
 
       const [fileName, fileExtension] = file.split('.')
       if (fileExtension === 'ejs') {
-        generateFileByTemplate(`${CURR_DIR}/${newProjectPath}/`,fileName, contents, projectChoice)
+        generateFileByTemplate(projectName, `${CURR_DIR}/${projectName}/`,fileName, contents, projectChoice)
       }
       else {
         fs.writeFileSync(writePath, contents, "utf8");
       }
     } else if (stats.isDirectory) {
-      fs.mkdirSync(`${CURR_DIR}/${newProjectPath}/${file}`);
+      fs.mkdirSync(`${CURR_DIR}/${projectName}/${file}`);
 
       createDirectoryContents(
         `${templatePath}/${file}`,
-        `${newProjectPath}/${file}`,
+        `${projectName}/${file}`,
         projectChoice
       );
     }
   });
 }
 
-function generateFileByTemplate(path, file, contents, projectChoice) {
+function generateFileByTemplate(projectName, path, file, contents, projectChoice) {
   let fileType
   let fileName
   const dataForTemplate = {
-    'projectName': 'zaca'
+    'projectName': projectName
   }
 
   if (projectChoice === 'drf') fileType = fileTypeDfr
   const newContent = ejs.render(contents, dataForTemplate)
-  for (let [key, value] of Object.entries(fileType)) {
-    if (key === file) {
-      fileName = `${key}.${value}`
-      break
+
+  Object.keys(fileType).forEach(key => {
+    if (key == file) {
+      fileName = `${key}.${fileType[key]}`
     }
-  }
+  })
+
   fs.writeFileSync(`${path}${fileName}`, newContent, "utf8")
   
 }
