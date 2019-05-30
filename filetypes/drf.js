@@ -5,5 +5,5 @@ export const fileTypes = {
     'nginx': 'conf',
     'gunicorn': 'conf.py',
     'urls': 'py',
-    '.travis': 'yml'
+    'travis': 'yml'
 }

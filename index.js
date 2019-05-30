@@ -80,7 +80,12 @@ function generateFileByTemplate(projectName, path, file, contents, projectChoice
 
   Object.keys(fileType).forEach(key => {
     if (key == file) {
-      fileName = `${key}.${fileType[key]}`
+      if (key == 'travis') {
+        fileName = `.${key}.${fileType[key]}`
+      }
+      else {
+        fileName = `${key}.${fileType[key]}`
+      }
     }
   })
 
