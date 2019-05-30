@@ -9,9 +9,9 @@ class CUDPermission(permissions.IsAuthenticated):
     def has_permission(self, request, view):
         username = request.user.username
         #if request.method in permissions.SAFE_METHODS:
-        if request.method in permissions.SAFE_METHODS and username == 'zaca':
+        if request.method in permissions.SAFE_METHODS and username == '<reading_user>':
             return True
-        elif username == 'nosfe':
+        elif username == '<crud_user>':
             return True
         else:
             return False

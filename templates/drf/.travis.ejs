@@ -1,0 +1,23 @@
+language: python
+
+python:
+  - "3.6"
+
+before_install:
+  - export DJANGO_SETTINGS_MODULE=config.settings.test
+  - export DATABASE_URL=sqlite:///bd-test.db
+
+# install all dependencies
+install: 
+  - pip install -r requirements.txt
+  - pip install codecov
+
+before_script:
+  - cd backend/<%= projectName %>
+
+# run the tests
+script: 
+  - coverage run manage.py test
+
+after_success:
+  codecov

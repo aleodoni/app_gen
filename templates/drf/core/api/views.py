@@ -14,22 +14,15 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 
 from ..util.auth import CUDPermission
-from .models import Ramal
-from .models import RamalAdmin
-from .models import SetorFuncionarioRamal
-from .models import Setor
-from .serializers import RamalSerializer
-from .serializers import RamalAdminSerializer
-from .serializers import SetorFuncionarioRamalSerializer
-from .serializers import SetorSerializer
-from consumer.lib import helper
+# from .models import <Model>
 
-from cmcreport.lib.views import CMCReportView
+# from .serializers import <Serializer>
 
 #--------------------------------------------------------------------------------------
-# 
+# CRUD ViewSet <Your Viewset Name>
 #--------------------------------------------------------------------------------------        
-class RamalViewSet( 
+'''
+class <Viewset CRUD>ViewSet( 
                     mixins.CreateModelMixin,
                     mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
@@ -39,66 +32,21 @@ class RamalViewSet(
 
     permission_classes = (CUDPermission,)
     authentication_classes = [TokenAuthentication, ]
-    queryset = Ramal.objects.all()
-    serializer_class = RamalSerializer
+    queryset = <Model>.objects.all()
+    serializer_class = <Serializer>Serializer
+'''
 
 #--------------------------------------------------------------------------------------
-# 
+# READ ViewSet <Your Viewset Name>
 #--------------------------------------------------------------------------------------        
-class SetorFuncionarioRamalListView(generics.ListAPIView):
+'''
+class <Viewset>ListView(generics.ListAPIView):
 
     permission_classes = (CUDPermission,)
     authentication_classes = [TokenAuthentication, ]                    
-    serializer_class = SetorFuncionarioRamalSerializer    
-    queryset = SetorFuncionarioRamal.objects.all()
+    serializer_class = <Serializer>Serializer    
+    queryset = <Model>.objects.all()
     filter_backends = (DjangoFilterBackend, OrderingFilter)
-    filter_fields = ('set_nome', 'pes_nome', )
-    ordering_fields = ('set_nome', 'pes_nome', )
-
-#--------------------------------------------------------------------------------------
-# 
-#--------------------------------------------------------------------------------------        
-class RamalAdminListView(generics.ListAPIView):
-
-    permission_classes = (CUDPermission,)
-    authentication_classes = [TokenAuthentication, ]                    
-    serializer_class = RamalAdminSerializer    
-    queryset = RamalAdmin.objects.all()
-
-#--------------------------------------------------------------------------------------
-# 
-#--------------------------------------------------------------------------------------        
-class SetorAdminListView(generics.ListAPIView):
-
-    permission_classes = (CUDPermission,)
-    authentication_classes = [TokenAuthentication, ]                    
-    serializer_class = SetorSerializer    
-    queryset = Setor.objects.all()    
-
-#--------------------------------------------------------------------------------------
-# Imprime chamado
-#--------------------------------------------------------------------------------------        
-class GeraPdfRamais(CMCReportView):
-    template_name = 'relatorio/ramais.html'
-    download_filename = 'lista_ramais.pdf'
-
-    def get_context_data(self, **kwargs):
-        context = super(CMCReportView, self).get_context_data(encoding =u"utf-8", **kwargs)
-        context['title'] = 'Listagem de Ramais'
-        context['pagesize'] = 'A4 portrait'
-        context['ramais'] = self.ramais
-
-        return context
-
-    def get(self, request, *args, **kwargs):
-
-        context = super(CMCReportView, self).get_context_data(encoding =u"utf-8", **kwargs)
-        parametros = request.GET.get('parametros', None)
-        ramais = []
-        if parametros is None:
-            ramais = SetorFuncionarioRamal.objects.all().order_by('set_id', 'pes_nome')
-        else:            
-            ramais = SetorFuncionarioRamal.objects.filter(Q(pes_nome__icontains=parametros) | Q(set_nome__icontains=parametros) | Q(numero__icontains=parametros)).order_by('set_id', 'pes_nome')
-        self.ramais = ramais
-
-        return super(GeraPdfRamais, self).get(request, *args, **kwargs)          
+    filter_fields = ('', )
+    ordering_fields = ('', )
+'''

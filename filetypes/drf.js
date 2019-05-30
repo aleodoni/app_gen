@@ -4,5 +4,6 @@ export const fileTypes = {
     'run': 'sh',
     'nginx': 'conf',
     'gunicorn': 'conf.py',
-    'urls': 'py'
+    'urls': 'py',
+    '.travis': 'yml'
 }

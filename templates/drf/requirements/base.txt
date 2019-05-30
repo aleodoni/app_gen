@@ -1,0 +1,30 @@
+# Base requirements for the project
+
+# Django
+django>=2.2.1
+
+# DRF
+djangorestframework>=3.9.4
+
+# Django Database URL
+dj-database-url>=0.5.0
+
+# Utility packages
+django-cors-headers>=2.5.2
+django-environ>=0.4.5
+django-extensions>=2.1.6
+django-filter>=2.1.0
+djangorestframework-simplejwt>=4.0.0
+html5lib>=1.0.1
+Markdown>=3.0.1
+PyJWT>=1.7.1
+requests>=2.21.0
+simplejson>=3.16.0
+
+# Print Packages
+django-easy-pdf==0.1.1
+xhtml2pdf>=0.2.3
+
+# Postgres Connector
+psycopg2>=2.7.7
+psycopg2-binary>=2.7.7

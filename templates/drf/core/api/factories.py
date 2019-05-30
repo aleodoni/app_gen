@@ -4,16 +4,15 @@ from factory.django import DjangoModelFactory
 from factory import SubFactory
 from datetime import datetime
 
-from .models import Ramal
+# from .models import <Your class model>
 
 #--------------------------------------------------------------------------------------
-# Factory Ramal
+# Factory <Your factory name>
 #--------------------------------------------------------------------------------------
-class RamalFactory(DjangoModelFactory):
+'''
+class <ModelName>Factory(DjangoModelFactory):
 	class Meta:
-		model = Ramal
+		model = <Model>
 	id = 1
-	setor_id = 172
-	numero = 4812
-	tipo = '0'
-	visivel = True
+	other fields here
+'''	
