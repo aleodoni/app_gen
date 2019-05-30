@@ -5,25 +5,17 @@ from contextlib import contextmanager
 import os  
 
 
-PROJECT_NAME = 'ramais'
+PROJECT_NAME = '<%= projectName %>'
 WEBAPPS = '/usr/share/webapps'
 HTML = '/var/www/html'
 ENVS = '/usr/share/envs'
 PROJECT_ROOT = WEBAPPS + '/%s' % PROJECT_NAME
-#BACKEND_ROOT = PROJECT_ROOT + '/backend/ramais' + '/%s' % PROJECT_NAME
-BACKEND_ROOT = PROJECT_ROOT + '/backend/ramais'
-REPO = 'https://github.com/CMCuritiba/ramais.git'
+BACKEND_ROOT = PROJECT_ROOT + '/backend/<%= projectName %>'
+REPO = 'https://github.com/CMCuritiba/<%= projectName %>.git'
 USERAPP = 'www-data'
-ENV_NAME = 'ramais'
+ENV_NAME = '<%= projectName %>'
 
 env.hosts = []
-
-@task
-def localhost():
-	env.hosts = ['localhost']
-	env.environment = 'localhost'
-	env.virtualenv = '/home/alexandre.odoni/personal/python/env-chamados-cmc/'
-	env.activate = '/bin/bash /home/alexandre.odoni/personal/python/env-chamados-cmc/bin/activate'
 
 @task
 def staging():
@@ -98,21 +90,6 @@ def source_virtualenv():
 		yield
 
 @task
-def testa_local():
-	local('clear')
-	result = local("./manage.py test --settings=config.settings.test")
-	if result.failed:
-		print(red("Algum teste falhou", bold=True))
-	else:
-		print(green("Todos testes passaram. Pronto para atualizar git "))
-
-@task
-def verifica():
-	with cd(PROJECT_ROOT):	
-		with source_virtualenv():
-			run('./manage.py check --settings=config.settings.production')
-
-@task
 def pull_master():
 	with cd(PROJECT_ROOT):
 		run('git pull origin master')
@@ -130,8 +107,6 @@ def install_production():
 
 @task
 def bootstrap():
-	'''
-	# Atualiza código para o servidor de aplicação
 
 	# git, nginx, supervisor e memcached
 	sudo('apt-get update')
@@ -164,17 +139,13 @@ def bootstrap():
 	# baixar o node e instalar
 	sudo('curl -sL https://deb.nodesource.com/setup_8.x | bash -')
 	sudo('apt-get install -y nodejs')
-	#sudo('npm install -g bower')
 
 	# Cria os diretórios e permissões necessários 
-	'''
-	#cria_grupo()
-	#cria_userapp()
+
 	sudo('git clone {} {}'.format(REPO, PROJECT_ROOT))
 	cria_webapps()	
 	cria_envs()
 	cria_html()
-	#sudo('git clone {} {}'.format(REPO, PROJECT_ROOT))
 
 	with cd(PROJECT_ROOT):
 		# Cria o ambiente virtual do projeto 
@@ -213,12 +184,12 @@ def git_update():
 @task 
 def cria_links():
 	if env.environment == 'staging':
-		sudo('ln -sf {}/deploy/staging/supervisor.conf /etc/supervisor/conf.d/ramais.conf'.format(BACKEND_ROOT))
-		sudo('ln -sf {}/deploy/staging/nginx.conf /etc/nginx/sites-enabled/ramais'.format(BACKEND_ROOT))
+		sudo('ln -sf {}/deploy/staging/supervisor.conf /etc/supervisor/conf.d/<%= projectName %>.conf'.format(BACKEND_ROOT))
+		sudo('ln -sf {}/deploy/staging/nginx.conf /etc/nginx/sites-enabled/<%= projectName %>'.format(BACKEND_ROOT))
 		sudo('chmod a+x {}/deploy/staging/run.sh'.format(BACKEND_ROOT))
 	elif env.environment == 'production':
-		sudo('ln -sf {}/deploy/production/supervisor.conf /etc/supervisor/conf.d/ramais.conf'.format(BACKEND_ROOT))
-		sudo('ln -sf {}/deploy/production/nginx.conf /etc/nginx/sites-enabled/ramais'.format(BACKEND_ROOT))
+		sudo('ln -sf {}/deploy/production/supervisor.conf /etc/supervisor/conf.d/<%= projectName %>.conf'.format(BACKEND_ROOT))
+		sudo('ln -sf {}/deploy/production/nginx.conf /etc/nginx/sites-enabled/<%= projectName %>'.format(BACKEND_ROOT))
 		sudo('chmod a+x {}/deploy/production/run.sh'.format(BACKEND_ROOT))
 	else:
 		print('Nenhum ambiente selecionado. Defina staging ou production.')
